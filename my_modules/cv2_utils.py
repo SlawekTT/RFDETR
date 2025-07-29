@@ -10,7 +10,7 @@ from PIL import Image
 def get_vid_cap(device: str):
     return cv2.VideoCapture(device)
 
-def grab_frame(vid_cap: cv2.VideoCapture) -> np.ndarray:
+def grab_frame(vid_cap: cv2.VideoCapture) -> tuple:
     ret, frame = vid_cap.read()
     return ret, frame
 
@@ -44,3 +44,15 @@ def video_streaming(vid_cap: cv2.VideoCapture,
 
 def convert_to_PIL(frame: np.ndarray):
     return Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
+
+def plot_bboxes(frame: np.ndarray, bboxes: list):
+    for bbox in bboxes:
+        pt1 = (int(bbox[0]), int(bbox[1]))
+        pt2 = (int(bbox[2]), int(bbox[3]))
+        frame = cv2.rectangle(img=frame,
+                              pt1=pt1,
+                              pt2=pt2,
+                              color=(0, 255, 0),
+                              thickness=1)
+    return frame
+
