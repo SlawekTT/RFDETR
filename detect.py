@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 
 # DEFINE CONSTANT VALUES
-DEVICE, MODEL_SIZE, DETECTION_THRESHOLD = parser_utils.get_cli_params()
+DEVICE, MODEL_SIZE, DETECTION_THRESHOLD, CAMERA_ANGLE = parser_utils.get_cli_params()
 DEVICE = parser_utils.device_to_int(DEVICE=DEVICE)
 
 VID_CAP = cv2_utils.get_vid_cap(device=DEVICE) # get video capture object
@@ -34,7 +34,8 @@ while True: # main loop
                                   bboxes=bboxes,
                                   tracker_id=track_id,
                                   track_objects=True) # plot bboxes
-    frame = cv2_utils.draw_angle_ruler(img=frame)
+    frame = cv2_utils.draw_angle_ruler(img=frame, 
+                                       camera_angle=CAMERA_ANGLE)
 
     # show frame on screen
     cv2_utils.show_frame(frame=frame, 
