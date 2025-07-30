@@ -65,9 +65,12 @@ def plot_bboxes(frame: np.ndarray,
                     thickness=2)
             bbox_x_center: int = int(pt1[0] + (pt2[0]-pt1[0])/2)
             radius = int(0.01 * frame.shape[1])
-            marker_height = int(0.9 * frame.shape[1])
-            print(frame.shape)
-            frame = cv2.circle(img=frame, center=(bbox_x_center, marker_height), radius=radius, color=box_color, thickness=-1)
+            marker_height = int(0.9 * frame.shape[0] - radius)
+            frame = cv2.circle(img=frame, 
+                               center=(bbox_x_center, marker_height), 
+                               radius=int(0.7* radius), 
+                               color=(0, 255, 0), 
+                               thickness=-1)
 
         
     else:
@@ -128,6 +131,8 @@ def draw_angle_ruler(img: np.ndarray, camera_angle: float=90.):
     horiz_len: int = img.shape[1] # get number of pixels - horizontal resolution
     d_alpha: float = camera_angle / horiz_len # get angle degrees per one pixel
     landmark_pixels = np.array([0.1, 0.3, 0.5, 0.7, 0.9]) * horiz_len # get columns at 10%, 30% ... of horizontal resolution
+    landmark_angles = (np.array([0.1, 0.3, 0.5, 0.7, 0.9]) * camera_angle) - 0.5 * camera_angle
+    
     ruler_height = int(0.9 * img.shape[0]) # height 
     # draw main ruler
     pt1: tuple = (int(landmark_pixels[0]), ruler_height)
@@ -148,6 +153,17 @@ def draw_angle_ruler(img: np.ndarray, camera_angle: float=90.):
                        pt2=pt2,
                        color=(0, 255, 0), 
                        thickness=3)
+    
+    # write angle values
 
-
+    for angle, pixel in zip(landmark_angles, landmark_pixels):
+        angle_str = f'{angle:.2f}'
+        org = (int(pixel), (ruler_height + 2 * marker_height))
+        cv2.putText(img=img,
+                    text=angle_str,
+                    org=org,
+                    fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                    fontScale=1,
+                    color=(0, 255, 0),
+                    thickness=2)
     return img

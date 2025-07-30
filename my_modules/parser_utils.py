@@ -5,6 +5,7 @@ def get_parser():
     parser.add_argument('-i', '--input', type=str, help='input device', default='0')
     parser.add_argument('-s', '--size', type=str, help='model size: nano/small/medium/large', default='nano')
     parser.add_argument('-t', '--threshold', type=float, help='detection threshold [0-1]', default=0.2)
+    parser.add_argument('-c', '--camera_angle', type=int, help='azimuthal camera angle range', default=90)
     return parser
 
 def get_parser_args():
@@ -14,7 +15,7 @@ def get_parser_args():
 
 def get_cli_params() -> list:
     args_dict: dict = get_parser_args() # get params into dictionary
-    params_list: list = ['input', 'size', 'threshold']
+    params_list: list = ['input', 'size', 'threshold', 'camera_angle']
     output_list: list = []
     for param in params_list:
         output_list.append(args_dict[param])
